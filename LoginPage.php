@@ -20,7 +20,7 @@
             <div class="nav-button">
                 <button class="btn white-btn" id="loginBtn" onclick="login()">Sign In</button>
                 <button class="btn " id="registerBtn" onclick="register()">Sign Up</button>
-                <a href="./index.html"><button class="btn" >Home</button></a>
+                <a href="index.php"><button class="btn" >Home</button></a>
             </div>
             <div class="nav-menu-btn">
                 <i class="bx bx-menu" onclick="myMenuFunction()"></i>

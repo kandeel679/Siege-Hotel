@@ -30,7 +30,7 @@
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div class="btns-cont">
-          <a href="./LoginPage.html"><button class="btn nav__btn">Login</button></a>
+          <a href="LoginPage.php"><button class="btn nav__btn">Login</button></a>
           <a target="" href="#rooms"><button class="btn nav__btn">Book now</button></a>
           <!-- https://www.booking.com/hotel/eg/mnzl-mstf-l-wm.en-gb.html?aid=356980&label=gog235jc-1FCAsoQ0IMZ3JhbmQtcGFsYWNlSDNYA2hDiAEBmAEJuAEXyAEM2AEB6AEB-AEMiAIBqAIDuAK4_8mxBsACAdICJDBlMTVhYTljLWZkZTItNDAyZi1iOGU2LWJkNzcwNzdiMmNiMtgCBuACAQ&sid=b2469a1ca26e956b9dd4ffc26671cb9a&dest_id=-291544;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=15;hpos=15;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1714586301;srpvid=09ae7e48f5b200ee;type=total;ucfs=1& -->
         </div>
