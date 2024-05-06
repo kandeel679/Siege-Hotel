@@ -29,6 +29,21 @@ function get_room($room_id)
 }
 
 // TODO: get_guest() and get_booking() @kandeel
+function get_guest($guest_id){
+    $conn = init_conn();
+    $sql = "SELECT * FROM guests WHERE guest_id = '$guest_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
+
+function get_booking($booking_id){
+    $conn = init_conn();
+    $sql = "SELECT * FROM bookings WHERE booking_id = '$booking_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
 
 function update_guest($guest_id, $name, $email, $password)
 {
