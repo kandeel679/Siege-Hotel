@@ -10,15 +10,27 @@ function init_conn()
 }
 
 
-function get_rooms() {
+function get_rooms()
+{
     $conn = init_conn();
+    $sql = "SELECT * FROM rooms";
+    $result = mysqli_query($conn, $sql);
     mysqli_close($conn);
+    return $result;
+}
+
+function get_room($room_id)
+{
+    $conn = init_conn();
+    $sql = "SELECT * FROM rooms WHERE id = '$room_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
 }
 
 // returns true if email and password are correct
 function valid_user($conn, $email, $password)
 {
-    $hash = password_hash($password, PASSWORD_DEFAULT);
     $sql = "SELECT email, password_hash FROM users WHERE email = '$email'";
     $result = mysqli_query($conn, $sql);
     return mysqli_num_rows($result) > 0 && password_verify($hash, $result[0]['password_hash']);
@@ -48,14 +60,17 @@ function add_user($conn, $name, $email, $password)
     mysqli_stmt_execute($stmt);
     return true;
 }
-function room_exists($conn, $room_id){
+
+function room_exists($conn, $room_id)
+{
     $sql = "SELECT * FROM rooms WHERE id = '$room_id'";
     $result = mysqli_query($conn, $sql);
     return mysqli_num_rows($result) > 0;
 }
 
-function add_booking($conn, $email, $room_id, $check_in, $check_out) {
-    if(!user_exists($conn, $email) || !room_exists($conn, $room_id))
+function add_booking($conn, $email, $room_id, $check_in, $check_out)
+{
+    if (!user_exists($conn, $email) || !room_exists($conn, $room_id))
         return false;
     $price =
     $sql = 'INSERT INTO bookings (user_id, room_id, check_in, check_out) VALUES (?, ?, ?, ?)';
