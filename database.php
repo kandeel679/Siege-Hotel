@@ -28,6 +28,15 @@ function get_room($room_id)
     return $result;
 }
 
+// TODO: get_guest() and get_booking() @kandeel
+
+// TODO: update_guest() and update_booking()
+
+// TODO: store_guest() and store_booking()
+
+
+
+
 // returns true if email and password are correct
 function valid_user($conn, $email, $password)
 {
