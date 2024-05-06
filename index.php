@@ -80,7 +80,7 @@
     <h2 class="section__header">The Most Memorable Rest Time Starts Here.</h2>
     <div class="room__grid">
         <?php
-        require 'Database.php';
+        require 'database_mysqli.php';
         $db = new Database();
         $rooms = $db->query("SELECT name, description, price, capacity FROM rooms")->fetchAll(PDO::FETCH_ASSOC);
         $i = 1;

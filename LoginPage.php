@@ -1,26 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php session_start(); ?>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="./Login_styles.css">
-    <title>Ludiflex | Login & Registration</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="./Login_styles.css">
+        <title>Ludiflex | Login & Registration</title>
+    </head>
 
-<body>
+    <body>
     <div class="wrapper">
         <nav class="nav">
             <div class="nav-logo">
                 <p>LOGO </p>
             </div>
-            
+
             <div class="nav-button">
                 <button class="btn white-btn" id="loginBtn" onclick="login()">Sign In</button>
                 <button class="btn " id="registerBtn" onclick="register()">Sign Up</button>
-                <a href="index.php"><button class="btn" >Home</button></a>
+                <a href="index.php">
+                    <button class="btn">Home</button>
+                </a>
             </div>
             <div class="nav-menu-btn">
                 <i class="bx bx-menu" onclick="myMenuFunction()"></i>
@@ -30,73 +33,78 @@
         <div class="form-box">
 
             <!------------------- login form -------------------------->
-            <div class="login-container" id="login">
-                <div class="top">
-                    <span>Don't have an account? <a href="#" onclick="register()">Register</a></span>
-                    <header>Login</header>
-                </div>
-                <div class="input-box">
-                    <input type="text" class="input-field" placeholder="Username or Email">
-                    <i class="bx bx-user"></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" class="input-field" placeholder="Password">
-                    <i class="bx bx-lock-alt"></i>
-                </div>
-                <div class="input-box">
-                    <input type="submit" class="submit" value="Sign In">
-                </div>
-                <div class="two-col">
-                    <div class="one">
-                        <input type="checkbox" id="login-check">
-                        <label for="login-check"> Remember Me</label>
+            <form action="LoginPage.php" method="post">
+                <div class="login-container" id="login">
+                    <div class="top">
+                        <span>Don't have an account? <a href="#" onclick="register()">Register</a></span>
+                        <header>Login</header>
                     </div>
-                    <div class="two">
-                        <label><a href="#">Forgot password?</a></label>
+                    <div class="input-box">
+                        <input type="text" class="input-field" name="email" placeholder="Email" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="submit" class="submit" name="sign-in" value="Sign In">
+                    </div>
+                    <div class="two-col">
+                        <div class="one">
+<!--                            <input type="checkbox" id="login-check">-->
+<!--                            <label for="login-check"> Remember Me</label>-->
+                        </div>
+                        <div class="two">
+                            <label><a href="#">Forgot password?</a></label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
             <!------------------- registration form -------------------------->
-            <div class="register-container" id="register">
-                <div class="top">
-                    <span>Have an account? <a href="#" onclick="login()">Login</a></span>
-                    <header>Register</header>
-                </div>
-                <!-- <div class="two-forms">
+            <form action="LoginPage.php" method="post">
+                <div class="register-container" id="register">
+                    <div class="top">
+                        <span>Have an account? <a href="#" onclick="login()">Login</a></span>
+                        <header>Register</header>
+                    </div>
+                    <!-- <div class="two-forms">
+                        <div class="input-box">
+                            <input type="text" class="input-field" placeholder="Firstname">
+                            <i class="bx bx-user"></i>
+                        </div>
+                        <div class="input-box">
+                            <input type="text" class="input-field" placeholder="Lastname">
+                            <i class="bx bx-user"></i>
+                        </div>
+                    </div> -->
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Firstname">
-                        <i class="bx bx-user"></i>
+                        <input type="email" class="input-field" name="email" placeholder="Email" required>
+                        <i class="bx bx-envelope"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" placeholder="Lastname">
-                        <i class="bx bx-user"></i>
+                        <input type="text" class="input-field" name="phone" placeholder="Phone Number" required>
+                        <i class="bx bx-envelope"></i>
                     </div>
-                </div> -->
-                <div class="input-box">
-                    <input type="email" class="input-field" placeholder="Email">
-                    <i class="bx bx-envelope"></i>
-                </div>
-                <div class="input-box">
-                    <input type="text" class="input-field" placeholder="Phone Number">
-                    <i class="bx bx-envelope"></i>
-                </div>
-                <div class="input-box">
-                    <input type="password" class="input-field" placeholder="Password">
-                    <i class="bx bx-lock-alt"></i>
-                </div>
-                <div class="input-box">
-                    <input type="submit" class="submit" value="Register">
-                </div>
-                <div class="two-col">
-                    <div class="one">
-                        <input type="checkbox" id="register-check">
-                        <label for="register-check"> Remember Me</label>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt"></i>
                     </div>
-                    <div class="two">
-                        <label><a href="#">Terms & conditions</a></label>
+                    <div class="input-box">
+                        <input type="submit" class="submit" name="register" value="Register">
+                    </div>
+                    <div class="two-col">
+                        <div class="one">
+<!--                            <input type="checkbox" id="register-check">-->
+<!--                            <label for="register-check"> Remember Me</label>-->
+                        </div>
+                        <div class="two">
+                            <label><a href="#">Terms & conditions</a></label>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
+
         </div>
     </div>
     <script>
@@ -116,6 +124,7 @@
         var b = document.getElementById("registerBtn");
         var x = document.getElementById("login");
         var y = document.getElementById("register");
+
         function login() {
             x.style.left = "4px";
             y.style.right = "-520px";
@@ -124,6 +133,7 @@
             x.style.opacity = 1;
             y.style.opacity = 0;
         }
+
         function register() {
             x.style.left = "-510px";
             y.style.right = "5px";
@@ -133,6 +143,22 @@
             y.style.opacity = 1;
         }
     </script>
-</body>
+    </body>
 
-</html>
+    </html>
+
+<?php
+require 'database_mysqli.php';
+$db = new database();
+if (isset($_POST['sign-in'])){
+    if(!empty($_POST['email']) && !empty($_POST['password'])){
+        $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $db->query("SELECT * FROM users WHERE email = '{$_POST['email']}' && password_hash = '{$password_hash}'")->fetch(PDO::FETCH_ASSOC);
+
+    }
+    $_SESSION['email'] = $_POST['email'];
+}
+else if (isset($_POST['register'])){
+
+}
+?>
