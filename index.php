@@ -21,7 +21,7 @@ require_once "database.php";
     <nav>
         <div class="nav__bar">
             <div class="logo">
-                <a href="#"><img src="assets/logo.png" alt="logo"/></a>
+                <a href="#"><img src="assets/logoo.png" alt="logo"/></a>
             </div>
             <div class="nav__menu__btn" id="menu-btn">
                 <i class="ri-menu-line"></i>
@@ -105,8 +105,8 @@ foreach ($rooms as $index => $room):
         <div class="room__card__details">
             <h4><?= $room['name'] ?></h4>
             <p><?= $room['description'] ?></p>
-            <h5>Starting from <span><?= $room['price'] ?></span></h5>
-            <b>Capacity: </b> <?= $room['capacity'] ?> person(s)
+            <h5>Starting from <span>$<?= $room['price'] ?></span></h5>
+            <h5>Capacity: </h5> <?= $room['capacity'] ?> person(s)
             <button class="btn">Book Now</button>
         </div>
     </div>
@@ -219,7 +219,7 @@ foreach ($rooms as $index => $room):
     <div class="section__container footer__container">
         <div class="footer__col">
             <div class="logo">
-                <a href="#home"><img src="assets/logo.png" alt="logo"/></a>
+                <a href="#home"><img src="assets/logoo.png" alt="logo"/></a>
             </div>
             <p class="section__description">
                 Discover a world of comfort, luxury, and adventure as you explore
@@ -250,13 +250,13 @@ foreach ($rooms as $index => $room):
         <div class="footer__col">
             <h4>CONTACT US</h4>
             <ul class="footer__links">
-                <li><a href="#">rayalpark@info.com</a></li>
+            <li><a href="mailto:SiegeHotel@gmail.com.com">SiegeHotel@gmail.com.com</a></li>
             </ul>
             <div class="footer__socials">
-                <a href="#"><img src="assets/facebook.png" alt="facebook"/></a>
-                <a href="#"><img src="assets/instagram.png" alt="instagram"/></a>
-                <a href="#"><img src="assets/youtube.png" alt="youtube"/></a>
-                <a href="#"><img src="assets/twitter.png" alt="twitter"/></a>
+                <a target="_blank" href="https://www.facebook.com/"><img src="assets/facebook.png" alt="facebook"/></a>
+                <a target="_blank" href="https://www.instagram.com/"><img src="assets/instagram.png" alt="instagram"/></a>
+                <a target="_blank" href="https://www.youtube.com/"><img src="assets/youtube.png" alt="youtube"/></a>
+                <a target="_blank" href="https://www.twitter.com/"><img src="assets/twitter.png" alt="twitter"/></a>
             </div>
         </div>
     </div>
