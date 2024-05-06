@@ -52,11 +52,22 @@ main {
     align-items: center;
 }
 
-.rooms, .room, .login {
+.rooms, .room {
     border: 1px solid black;
     padding: 16px;
     margin: 16px;
     width: 60vw;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.login, .signup {
+    border: 1px solid black;
+    padding: 8px;
+    margin: 8px;
+    width: 40vw;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -71,7 +82,18 @@ main {
     width: 50vw;
 }
 
-.login div {
-    margin: 16px;
-    padding: 16px;
+.login div, .signup div {
+    margin: 8px;
+    padding: 8px;
 }
+
+label {
+    display: block;
+    width: 150px;
+}
+
+button {
+    margin: 8px;
+    padding: 8px;
+}
+
