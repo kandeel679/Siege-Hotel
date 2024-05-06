@@ -37,10 +37,27 @@ function get_room($room_id)
     return $result;
 }
 
+function Login($email,$pass){
+    $conn = init_conn();
+    $sql = "SELECT * FROM guests WHERE email = 'youssik000@gmailcom' AND password = 'kandeel'";
+    $result = mysqli_query($conn, $sql);
+    $numberOfRows = mysqli_num_rows($result);
+    mysqli_close($conn);
+    return $numberOfRows != 0;
+}
+
+
 // TODO: get_guest() and get_booking() @kandeel
 function get_guest($guest_id){
     $conn = init_conn();
     $sql = "SELECT * FROM guests WHERE guest_id = '$guest_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
+function get_guestByemail($email){
+    $conn = init_conn();
+    $sql = "SELECT * FROM guests WHERE email = '$email'";
     $result = mysqli_query($conn, $sql);
     mysqli_close($conn);
     return $result;
@@ -83,7 +100,6 @@ function store_guest($name, $email, $password)
     mysqli_close($conn);
     return $last_id;
 }
-function
 
 // returns true if email and password are correct
 //function valid_user($conn, $email, $password)

@@ -1,4 +1,35 @@
 <?php session_start(); ?>
+
+<?php
+require 'database.php';
+if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+    echo "BBB";
+
+    $guest_id = null;
+    try {
+        $guest_id = store_guest($_POST["name"], $_POST["email"], $_POST["password"]);
+    } catch (mysqli_sql_exception $e) {
+        echo "<span style='color: red;'>This email is taken.</span>";
+    }
+    if ($guest_id) {
+        setcookie("guest_id", $guest_id, time() + (86488 * 2), "/");
+        setcookie("logged", true, time() + (86488 * 2), "/");
+        header("Location: ./index.php");
+    }
+}else if(isset($_POST["email"]) && isset($_POST["password"])  ){
+    echo "BBB";
+    if (Login($_POST["email"],$_POST["password"])) {
+        $user = mysqli_fetch_assoc(get_guestByemail($_POST["email"]));
+        echo "BBB";
+        setcookie("guest_id", $user["guest_id"], time() + (86488 * 2), "/");
+        setcookie("logged", true, time() + (86488 * 2), "/");
+        header("Location: ./index.php");
+        
+    }
+    echo "ccc";
+}
+?>
+
     <!DOCTYPE html>
     <html lang="en">
 
@@ -33,65 +64,53 @@
         <div class="form-box">
 
             <!------------------- login form -------------------------->
-            <form action="LoginPage.php" method="post">
-                <div class="login-container" id="login">
-                    <div class="top">
-                        <span>Don't have an account? <a href="#" onclick="register()">Register</a></span>
-                        <header>Login</header>
+      <form  action="LoginPage.php" method="post"  class="login-container" id="login">
+                <div class="top">
+                    <span>Don't have an account? <a href="#" onclick="register()">Register</a></span>
+                    <header>Login</header>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="email" id="email"   class="input-field" placeholder="Email">
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="password" id="password" class="input-field" placeholder="Password">
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-box">
+                    <input type="submit" class="submit" value="Sign In">
+                </div>
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="login-check">
+                        <label for="login-check"> Remember Me</label>
                     </div>
-                    <div class="input-box">
-                        <input type="text" class="input-field" name="email" placeholder="Email" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" class="input-field" name="password" placeholder="Password" required>
-                        <i class="bx bx-lock-alt"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="submit" class="submit" name="sign-in" value="Sign In">
-                    </div>
-                    <div class="two-col">
-                        <div class="one">
-<!--                            <input type="checkbox" id="login-check">-->
-<!--                            <label for="login-check"> Remember Me</label>-->
-                        </div>
-                        <div class="two">
-                            <label><a href="#">Forgot password?</a></label>
-                        </div>
+                    <div class="two">
+                        <label><a href="#">Forgot password?</a></label>
                     </div>
                 </div>
-            </form>
+            </form>  
             <!------------------- registration form -------------------------->
-            <form action="LoginPage.php" method="post">
-                <div class="register-container" id="register">
+        
+                <form action="LoginPage.php" method="post" class="register-container" id="register">
                     <div class="top">
                         <span>Have an account? <a href="#" onclick="login()">Login</a></span>
                         <header>Register</header>
                     </div>
-                    <!-- <div class="two-forms">
-                        <div class="input-box">
-                            <input type="text" class="input-field" placeholder="Firstname">
-                            <i class="bx bx-user"></i>
-                        </div>
-                        <div class="input-box">
-                            <input type="text" class="input-field" placeholder="Lastname">
-                            <i class="bx bx-user"></i>
-                        </div>
-                    </div> -->
                     <div class="input-box">
-                        <input type="email" class="input-field" name="email" placeholder="Email" required>
+                        <input type="email" name="email" id="email"  class="input-field" name="email" placeholder="Email" required>
                         <i class="bx bx-envelope"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" name="phone" placeholder="Phone Number" required>
+                        <input type="text" name="name" id="name" type="text" class="input-field" name="name" placeholder="Name" required>
                         <i class="bx bx-envelope"></i>
                     </div>
                     <div class="input-box">
-                        <input type="password" class="input-field" name="password" placeholder="Password" required>
+                        <input type="password" name="password" id="password"  type="password" class="input-field" name="password" placeholder="Password" required>
                         <i class="bx bx-lock-alt"></i>
                     </div>
                     <div class="input-box">
-                        <input type="submit" class="submit" name="register" value="Register">
+                        <button type="submit" name="signup" type="submit" class="submit"  value="Sign up" > s</button>
                     </div>
                     <div class="two-col">
                         <div class="one">
@@ -102,8 +121,7 @@
                             <label><a href="#">Terms & conditions</a></label>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
 
         </div>
     </div>
@@ -147,18 +165,3 @@
 
     </html>
 
-<?php
-require 'database_mysqli.php';
-$db = new database();
-if (isset($_POST['sign-in'])){
-    if(!empty($_POST['email']) && !empty($_POST['password'])){
-        $password_hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-        $db->query("SELECT * FROM users WHERE email = '{$_POST['email']}' && password_hash = '{$password_hash}'")->fetch(PDO::FETCH_ASSOC);
-
-    }
-    $_SESSION['email'] = $_POST['email'];
-}
-else if (isset($_POST['register'])){
-
-}
-?>
