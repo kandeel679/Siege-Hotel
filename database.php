@@ -2,12 +2,21 @@
 function init_conn()
 {
     try {
-        $conn = mysqli_connect("localhost", "root", "", "web_project_db");
+        $conn = mysqli_connect("localhost", "root", "kandeel", "myapp");
     } catch (mysqli_sql_exception $e) {
         echo "could not connect to database";
     }
     return $conn;
 }
+// function init_conn()
+// {
+//     try {
+//         $conn = mysqli_connect("localhost", "root", "", "web_project_db");
+//     } catch (mysqli_sql_exception $e) {
+//         echo "could not connect to database";
+//     }
+//     return $conn;
+// }
 
 
 function get_rooms()
