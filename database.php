@@ -30,11 +30,25 @@ function get_room($room_id)
 
 // TODO: get_guest() and get_booking() @kandeel
 
-// TODO: update_guest() and update_booking()
+function update_guest($guest_id, $name, $email, $password)
+{
+    $conn = init_conn();
+    $sql = "UPDATE guests SET name = '$name', email = '$email', password = '$password' WHERE guest_id = '$guest_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
+
+function cancel_booking($booking_id)
+{
+    $conn = init_conn();
+    $sql = "UPDATE bookings SET status = 'cancelled' WHERE id = '$booking_id'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
 
 // TODO: store_guest() and store_booking()
-
-
 
 
 // returns true if email and password are correct
