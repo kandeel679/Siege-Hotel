@@ -1,4 +1,5 @@
 :root {
+    --darker: #888;
     --dark: #aaa;
     --light: #fff;
 }
@@ -17,10 +18,11 @@ body {
 nav {
     position: sticky;
     top: 0;
+    z-index: 1;
 }
 
 nav, footer {
-    background: var(--dark);
+    background: var(--darker);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -42,18 +44,8 @@ main {
     justify-content: space-between;
 }
 
-.about-us {
-    border: 1px solid black;
-    padding: 16px;
-    margin: 16px;
-    width: 60vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.rooms, .room {
-    border: 1px solid black;
+.login, .signup, .about-us, .rooms, .room, .booking, .bookings, .account-info {
+    background: var(--dark);
     padding: 16px;
     margin: 16px;
     width: 60vw;
@@ -63,26 +55,15 @@ main {
     align-items: center;
 }
 
-.login, .signup {
-    border: 1px solid black;
-    padding: 8px;
-    margin: 8px;
-    width: 40vw;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.room {
+.room, .booking {
     width: 55vw
 }
 
-.room img {
+img, video{
     width: 50vw;
 }
 
-.login div, .signup div {
+.login div, .signup div, button {
     margin: 8px;
     padding: 8px;
 }
@@ -90,10 +71,5 @@ main {
 label {
     display: block;
     width: 150px;
-}
-
-button {
-    margin: 8px;
-    padding: 8px;
 }
 

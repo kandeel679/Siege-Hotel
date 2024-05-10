@@ -1,11 +1,21 @@
-<?php $title = "Hotel";
+<?php
+session_start();
+if (isset($_POST['room_id'])) {
+    $_SESSION['room_id'] = $_POST['room_id'];
+    if (isset($_SESSION['guest_email']))
+        header('Location: book.php');
+    else
+        header('Location: login.php');
+    exit();
+}
+$title = "Hotel";
 require_once "database.php";
 require "partials/head.php";
 require "partials/navbar.php";
 ?>
     <main>
         <div class="about-us">
-            <img src="assets/about-us.jpg" alt="hotels" style="padding: 16px;width: 55vw;">
+            <video src="assets/egypt.mp4" controls autoplay loop></video>
             <h1>About Us</h1>
             <p style="padding: 16px;">
                 We are a hotel located in the heart of Cairo. We are known for exceptional service and luxurious rooms.
@@ -21,7 +31,7 @@ require "partials/navbar.php";
             <?php $rooms = get_rooms();
             foreach ($rooms as $room):?>
                 <div class="room">
-                    <img src="./assets/room<?= $room['room_id'] ?>.jpg" alt="Room"/>
+                    <img src="./assets/room-<?= $room['room_id'] ?>.jpg" alt="Room"/>
                     <h2><?= $room['name'] ?>
                     </h2>
                     <p><?= $room['description'] ?>
@@ -30,8 +40,8 @@ require "partials/navbar.php";
                         <b>Price: </b> EGP <?= $room['price'] ?>/night
                         <b>Capacity: </b> <?= $room['capacity'] ?> person(s)
                     </div>
-                    <form action="book.php" method="get">
-                        <button type="submit" name="room_id" value="<?= $room['room_id'] ?>"><h2>Book</h2></button>
+                    <form action="index.php" method="post">
+                        <button type="submit" name="room_id" value="<?= $room['room_id'] ?>">Book</button>
                     </form>
                 </div>
             <?php endforeach ?>
