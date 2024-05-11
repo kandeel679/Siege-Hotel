@@ -2,31 +2,41 @@
 
 <?php
 require 'database.php';
-if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])) {
-    echo "BBB";
+$error_message = '';
+if (isset($_POST["signup"])) {
+    if (store_guest($_POST["name"], $_POST["email"], $_POST["password"])) {
+        $_SESSION['guest_email'] = $_POST['email'];
+        if (isset($_SESSION['room_id']))
+            header('Location: booking.php');
+        else
+            header('Location: index.php');
+        exit();
+    } else {
+        // Email is taken
+        $error_message = "This email is already taken. <a href='login.php'>Log in?</a>";
+    }
+}
 
-    $guest_id = null;
-    try {
-        $guest_id = store_guest($_POST["name"], $_POST["email"], $_POST["password"]);
-    } catch (mysqli_sql_exception $e) {
-        echo "<span style='color: red;'>This email is taken.</span>";
+if (isset($_POST["login"])) {
+    $login = login($_POST['email'], $_POST['password']);
+    switch ($login) {
+        case 0:
+            // Email not registered
+            $error_message = "Email not registered. <a href='signup.php'>Register?</a>";
+            break;
+        case 1:
+            // Incorrect password
+            $error_message = "Incorrect password";
+            break;
+        case 2:
+            $_SESSION['guest_email'] = $_POST['email'];
+            if (isset($_SESSION['room_id']))
+            header('Location: booking.php');
+        else
+        // echo $_SESSION['guest_email'] ; 
+                header('Location: index.php');
+            exit();
     }
-    if ($guest_id) {
-        setcookie("guest_id", $guest_id, time() + (86488 * 2), "/");
-        setcookie("logged", true, time() + (86488 * 2), "/");
-        header("Location: ./index.php");
-    }
-} else if (isset($_POST["email"]) && isset($_POST["password"])) {
-    echo "BBB";
-    if (Login($_POST["email"], $_POST["password"])) {
-        $user = mysqli_fetch_assoc(get_guestByemail($_POST["email"]));
-        echo "BBB";
-        setcookie("guest_id", $user["guest_id"], time() + (86488 * 2), "/");
-        setcookie("logged", true, time() + (86488 * 2), "/");
-        header("Location: ./index.php");
-
-    }
-    echo "ccc";
 }
 ?>
 
@@ -39,7 +49,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="./Login_styles.css">
+    <link rel="stylesheet" href="./css/Login_styles.css">
     <title>Ludiflex | Login & Registration</title>
 </head>
 
@@ -47,7 +57,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
     <div class="wrapper">
         <nav class="nav">
             <div class="nav-logo">
-                <p>LOGO </p>
+                <p>Siege Hotel </p>
             </div>
 
             <div class="nav-button">
@@ -66,10 +76,21 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
 
             <!------------------- login form -------------------------->
             <form action="LoginPage.php" method="post" class="login-container" id="login">
+
                 <div class="top">
                     <span>Don't have an account? <a href="#" onclick="register()">Register</a></span>
                     <header>Login</header>
                 </div>
+                <?php
+                            if (isset($error_message) && !empty($error_message) && ($error_message[0] == "E" || $error_message[0] == "I" || $error_message[0] == "T")) {
+                                echo '<div style="color: red; text-align: center;">
+                                    <p>' . $error_message . '</p>
+                                </div>';
+                            } 
+                            ?>
+
+
+
                 <div class="input-box">
                     <input type="email" name="email" id="email" class="input-field" placeholder="Email">
                     <i class="bx bx-user"></i>
@@ -79,7 +100,7 @@ if (isset($_POST["name"]) && isset($_POST["email"]) && isset($_POST["password"])
                     <i class="bx bx-lock-alt"></i>
                 </div>
                 <div class="input-box">
-                    <input type="submit" class="submit" value="Sign In">
+                    <input type="submit" class="submit"  name="login" value="Sign In">
                 </div>
                 <div class="two-col">
                     <div class="one">

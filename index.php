@@ -1,5 +1,15 @@
 <?php $title = "Hotel";
 require_once "database.php";
+
+session_start();
+if (isset($_POST['room_id'])) {
+    $_SESSION['room_id'] = $_POST['room_id'];
+    if (isset($_SESSION['guest_email']))
+        header('Location: booking.php');
+    else
+        header('Location: LoginPage.php');
+    exit();
+}
 ?>
 
 
@@ -7,13 +17,13 @@ require_once "database.php";
 <html lang="en">
 
 <head>
-    <link rel="icon" type="image/x-icon" href="/assets/chess-rook.602x1024.ico">
+    <link rel="icon" type="image/x-icon" href="../assets/chess-rook.602x1024.ico">
 
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.0.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
     <title>Web Design Mastery | Rayal Park</title>
 </head>
 
@@ -23,7 +33,7 @@ require_once "database.php";
         <nav>
             <div class="nav__bar">
                 <div class="logo">
-                    <a href="#"><img src="assets/logoo.png" alt="logo" /></a>
+                    <a href="#"><img src="../assets/logoo.png" alt="logo" /></a>
                 </div>
                 <div class="nav__menu__btn" id="menu-btn">
                     <i class="ri-menu-line"></i>
@@ -36,13 +46,24 @@ require_once "database.php";
                 <li><a href="#explore">Explore</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+
             <div class="btns-cont">
-                <a href="LoginPage.php">
-                    <button class="btn nav__btn">Login</button>
+                 
+                <a target="" href="account.php">
+                    <button class="btn nav__btn">Account</button>
                 </a>
-                <a target="" href="#rooms">
-                    <button class="btn nav__btn">Book now</button>
-                </a>
+                <?php
+                if (isset($_SESSION["guest_email"]))
+                    echo '<a href="Logout.php">
+                <button class="btn nav__btn">Logout</button>
+                </a>';
+                else
+                echo '<a href="LoginPage.php">
+                        <button class="btn nav__btn">Login</button>
+                        </a>';
+                ?>
+                <i class="bx bx-lock-alt"></i>
+               
                 <!-- https://www.booking.com/hotel/eg/mnzl-mstf-l-wm.en-gb.html?aid=356980&label=gog235jc-1FCAsoQ0IMZ3JhbmQtcGFsYWNlSDNYA2hDiAEBmAEJuAEXyAEM2AEB6AEB-AEMiAIBqAIDuAK4_8mxBsACAdICJDBlMTVhYTljLWZkZTItNDAyZi1iOGU2LWJkNzcwNzdiMmNiMtgCBuACAQ&sid=b2469a1ca26e956b9dd4ffc26671cb9a&dest_id=-291544;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=15;hpos=15;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1714586301;srpvid=09ae7e48f5b200ee;type=total;ucfs=1& -->
             </div>
         </nav>
@@ -60,7 +81,7 @@ require_once "database.php";
 
     <section class="section__container about__container" id="about">
         <div class="about__image">
-            <img src="assets/about.jpg" alt="about" />
+            <img src="../assets/about.jpg" alt="about" />
         </div>
         <div class="about__content">
             <p class="section__subheader">ABOUT US</p>
@@ -93,11 +114,15 @@ require_once "database.php";
         <div class="room__grid">
             <?php
             $rooms = get_rooms();
-            $roomImgs = ["assets/room-1.jpg", "assets/room-2.jpg", "assets/room-3.jpg"];
-
+            $roomImgs = ["../assets/room-1.jpg", "../assets/room-2.jpg", "../assets/room-3.jpg"];
+            $i = 0;
             foreach ($rooms as $index => $room):
                 $imgIndex = $index % count($roomImgs); // Ensure index is within range of $roomImgs
+                if($i>=3){
+                    break;
+                }
                 ?>
+
                 <div class="room__card">
                     <div class="room__card__image">
                         <img src="<?= $roomImgs[$imgIndex] ?>" alt="room" />
@@ -111,54 +136,14 @@ require_once "database.php";
                         <h4><?= $room['name'] ?></h4>
                         <p><?= $room['description'] ?></p>
                         <h5>Starting from <span>$<?= $room['price'] ?></span></h5>
-                        <h5>Capacity: </h5> <?= $room['capacity'] ?> person(s)
-                        <button class="btn">Book Now</button>
+                        <form action="index.php" method="post">
+                            <button class="btn" name="room_id" value="<?= $room['room_id'] ?>">Book Now</button>
+                        </form>
                     </div>
                 </div>
+                
+            <?php $i++ ?>
             <?php endforeach ?>
-
-
-
-            <!-- start of a room -->
-            <!-- end of a rooom -->
-            <!-- <div class="room__card">
-          <div class="room__card__image">
-            <img src="assets/room-2.jpg" alt="room" />
-            <div class="room__card__icons">
-              <span><i class="ri-heart-fill"></i></span>
-              <span><i class="ri-paint-fill"></i></span>
-              <span><i class="ri-shield-star-line"></i></span>
-            </div>
-          </div>
-          <div class="room__card__details">
-            <h4>Executive Cityscape Room</h4>
-            <p>
-              Experience urban elegance and modern comfort in the heart of the
-              city.
-            </p>
-            <h5>Starting from <span>$199/night</span></h5>
-            <button class="btn">Book Now</button>
-          </div>
-        </div> -->
-            <!-- <div class="room__card">
-          <div class="room__card__image">
-            <img src="assets/room-3.jpg" alt="room" />
-            <div class="room__card__icons">
-              <span><i class="ri-heart-fill"></i></span>
-              <span><i class="ri-paint-fill"></i></span>
-              <span><i class="ri-shield-star-line"></i></span>
-            </div>
-          </div>
-          <div class="room__card__details">
-            <h4>Family Garden Retreat</h4>
-            <p>
-              Spacious and inviting, perfect for creating cherished memories
-              with loved ones.
-            </p>
-            <h5>Starting from <span>$249/night</span></h5>
-            <button class="btn">Book Now</button>
-          </div>
-        </div> -->
         </div>
     </section>
     <!-- end of the rooms sectoin -->
@@ -193,7 +178,7 @@ require_once "database.php";
         <div class="banner__content">
             <div class="banner__card">
                 <h4>25+</h4>
-                <p>Properties Available</p>
+                <p>Skiped lectures</p>
             </div>
             <div class="banner__card">
                 <h4>350+</h4>
@@ -201,7 +186,7 @@ require_once "database.php";
             </div>
             <div class="banner__card">
                 <h4>600+</h4>
-                <p>Happy Customers</p>
+                <p>Murdered Customers</p>
             </div>
         </div>
     </section>
@@ -211,7 +196,7 @@ require_once "database.php";
         <h2 class="section__header">What's New Today.</h2>
         <div class="explore__bg">
             <div class="explore__content">
-                <p class="section__description">10th MAR 2023</p>
+                <p class="section__description">11th MAY 2024</p>
                 <h4>A New Menu Is Available In Our Hotel.</h4>
                 <a target="_blank" href="https://www.menuegypt.com/kebda-al-falah-alexandria-">
                     <button class="btn">Continue</button>
@@ -224,33 +209,22 @@ require_once "database.php";
         <div class="section__container footer__container">
             <div class="footer__col">
                 <div class="logo">
-                    <a href="#home"><img src="assets/logoo.png" alt="logo" /></a>
+                    <a href="#home"><img src="../assets/logoo.png" alt="logo" /></a>
                 </div>
                 <p class="section__description">
                     Discover a world of comfort, luxury, and adventure as you explore
                     our curated selection of hotels, making every moment of your getaway
                     truly extraordinary.
                 </p>
-                <button class="btn">Book Now</button>
+                <a target = "_blanck" href="https://www.booking.com/hotel/eg/mnzl-mstf-l-wm.en-gb.html?aid=356980&label=gog235jc-1FCAsoQ0IMZ3JhbmQtcGFsYWNlSDNYA2hDiAEBmAEJuAEXyAEM2AEB6AEB-AEMiAIBqAIDuAK4_8mxBsACAdICJDBlMTVhYTljLWZkZTItNDAyZi1iOGU2LWJkNzcwNzdiMmNiMtgCBuACAQ&sid=b2469a1ca26e956b9dd4ffc26671cb9a&dest_id=-291544;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=15;hpos=15;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=1714586301;srpvid=09ae7e48f5b200ee;type=total;ucfs=1&"><button class="btn">Book Now</button></a>
             </div>
             <div class="footer__col">
                 <h4>QUICK LINKS</h4>
-                <ul class="footer__links">
-                    <li><a href="#">Browse Destinations</a></li>
-                    <li><a href="#">Special Offers & Packages</a></li>
-                    <li><a href="#">Room Types & Amenities</a></li>
-                    <li><a href="#">Customer Reviews & Ratings</a></li>
-                    <li><a href="#">Travel Tips & Guides</a></li>
-                </ul>
+               
             </div>
             <div class="footer__col">
                 <h4>OUR SERVICES</h4>
-                <ul class="footer__links">
-                    <li><a href="#">Concierge Assistance</a></li>
-                    <li><a href="#">Flexible Booking Options</a></li>
-                    <li><a href="#">Airport Transfers</a></li>
-                    <li><a href="#">Wellness & Recreation</a></li>
-                </ul>
+              
             </div>
             <div class="footer__col">
                 <h4>CONTACT US</h4>
@@ -258,19 +232,19 @@ require_once "database.php";
                     <li><a href="mailto:SiegeHotel@gmail.com.com">SiegeHotel@gmail.com.com</a></li>
                 </ul>
                 <div class="footer__socials">
-                    <a target="_blank" href="https://www.facebook.com/"><img src="assets/facebook.png"
+                    <a target="_blank" href="https://www.facebook.com/"><img src="../assets/facebook.png"
                             alt="facebook" /></a>
-                    <a target="_blank" href="https://www.instagram.com/"><img src="assets/instagram.png"
+                    <a target="_blank" href="https://www.instagram.com/"><img src="../assets/instagram.png"
                             alt="instagram" /></a>
-                    <a target="_blank" href="https://www.youtube.com/"><img src="assets/youtube.png"
+                    <a target="_blank" href="https://www.youtube.com/"><img src="../assets/youtube.png"
                             alt="youtube" /></a>
-                    <a target="_blank" href="https://www.twitter.com/"><img src="assets/twitter.png"
+                    <a target="_blank" href="https://www.twitter.com/"><img src="../assets/twitter.png"
                             alt="twitter" /></a>
                 </div>
             </div>
         </div>
         <div class="footer__bar">
-            Copyright © 2023 Web Design Mastery. All rights reserved.
+            Web Programming (CCS2305)@2024
         </div>
     </footer>
 

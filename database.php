@@ -1,12 +1,12 @@
 <?php
 function init_conn()
 {
-    try {
-        $conn = mysqli_connect("localhost", "root", "kandeel", "myapp");
-    } catch (mysqli_sql_exception $e) {
-        echo "could not connect to database";
-    }
-    return $conn;
+   try {
+       $conn = mysqli_connect("localhost", "root", "kandeel", "myapp");
+   } catch (mysqli_sql_exception $e) {
+       echo "could not connect to database";
+   }
+   return $conn;
 }
 // function init_conn()
 // {
@@ -17,7 +17,6 @@ function init_conn()
 //     }
 //     return $conn;
 // }
-
 
 function get_rooms()
 {
@@ -32,91 +31,108 @@ function get_room($room_id)
 {
     $conn = init_conn();
     $sql = "SELECT * FROM rooms WHERE room_id = '$room_id'";
-    $result = mysqli_query($conn, $sql);
+    $room = mysqli_fetch_assoc(mysqli_query($conn, $sql));
     mysqli_close($conn);
-    return $result;
+    return $room;
 }
 
-function Login($email, $pass)
+function get_guest($guest_email)
 {
     $conn = init_conn();
-    $sql = "SELECT * FROM guests WHERE email = '$email' AND password = '$pass'";
-    $result = mysqli_query($conn, $sql);
-    $numberOfRows = mysqli_num_rows($result);
+    $sql = "SELECT * FROM guests WHERE email = '$guest_email'";
+    $guest = mysqli_fetch_assoc(mysqli_query($conn, $sql));
     mysqli_close($conn);
-    return $numberOfRows != 0;
-}
-
-
-// TODO: get_guest() and get_booking() @kandeel
-function get_guest($guest_id)
-{
-    $conn = init_conn();
-    $sql = "SELECT * FROM guests WHERE guest_id = '$guest_id'";
-    $result = mysqli_query($conn, $sql);
-    mysqli_close($conn);
-    return $result;
-}
-function get_guestByemail($email)
-{
-    $conn = init_conn();
-    $sql = "SELECT * FROM guests WHERE email = '$email'";
-    $result = mysqli_query($conn, $sql);
-    mysqli_close($conn);
-    return $result;
+    return $guest;
 }
 
 function get_booking($booking_id)
 {
     $conn = init_conn();
     $sql = "SELECT * FROM bookings WHERE booking_id = '$booking_id'";
-    $result = mysqli_query($conn, $sql);
+    $booking = mysqli_fetch_assoc(mysqli_query($conn, $sql));
     mysqli_close($conn);
-    return $result;
+    return $booking;
 }
 
+function get_bookings($guest_email)
+{
+    $conn = init_conn();
+    $sql = "SELECT * FROM bookings WHERE guest_email = '$guest_email'";
+    $bookings = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $bookings;
+}
+
+// ------------ END GET ---------
+
+// ----------- UPDATE DB ------------
 function update_guest($guest_id, $name, $email, $password)
 {
     $conn = init_conn();
     $sql = "UPDATE guests SET name = '$name', email = '$email', password = '$password' WHERE guest_id = '$guest_id'";
-    $result = mysqli_query($conn, $sql);
+    $success = mysqli_query($conn, $sql);
     mysqli_close($conn);
-    return $result;
+    return $success;
 }
 
 function cancel_booking($booking_id)
 {
     $conn = init_conn();
     $sql = "UPDATE bookings SET status = 'cancelled' WHERE id = '$booking_id'";
-    $result = mysqli_query($conn, $sql);
+    $success = mysqli_query($conn, $sql);
     mysqli_close($conn);
-    return $result;
+    return $success;
 }
 
-// TODO: store_guest() and store_booking()
-// returns guest_id
+
+// ------------- STORE -------------
+// returns true if successful
 function store_guest($name, $email, $password)
 {
     $conn = init_conn();
     $sql = "INSERT INTO guests (name, email, password) VALUES ('$name', '$email', '$password')";
-    mysqli_query($conn, $sql);
-    $last_id = mysqli_insert_id($conn);
-    mysqli_close($conn);
-    return $last_id;
-}
-
-// returns true if email and password are correct
-//function valid_user($conn, $email, $password)
-//{
-//    $sql = "SELECT email, password_hash FROM users WHERE email = '$email'";
-//    $result = mysqli_query($conn, $sql);
-//    return mysqli_num_rows($result) > 0 && password_verify($hash, $result[0]['password_hash']);
-//}
-
-function add_booking($conn, $email, $room_id, $check_in, $check_out)
-{
-    if (!user_exists($conn, $email) || !room_exists($conn, $room_id))
+    try {
+        mysqli_query($conn, $sql);
+    } catch (mysqli_sql_exception $e) {
         return false;
-    $price =
-        $sql = 'INSERT INTO bookings (user_id, room_id, check_in, check_out) VALUES (?, ?, ?, ?)';
+    } finally {
+        mysqli_close($conn);
+    }
+    return true;
 }
+
+function store_booking($guest_email, $room_id, $check_in, $check_out)
+{
+    $conn = init_conn();
+    $price = mysqli_fetch_array(mysqli_query($conn, "SELECT price FROM rooms WHERE room_id = '$room_id'"));
+    if (is_null($price))
+        return false;
+    $days = strtotime($check_out) - strtotime($check_in);
+    $days = floor($days / (60 * 60 * 24));
+    $price = $price[0] * $days;
+    $sql = "insert into bookings(guest_email, room_id, price, status, check_in, check_out)  
+            values ('$guest_email', '$room_id', '$price', 'paid', '$check_in', '$check_out')";
+    $success = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $success;
+}
+
+// ------------- END STORE -------------
+
+// ------------- LOGIN --------------
+function login($guest_email, $password)
+{
+    $conn = init_conn();
+    $sql = "SELECT email, password FROM guests WHERE email = '$guest_email'";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        if ($password == $row['password'])
+            return 2;
+        return 1;
+    }
+    return 0;
+
+}
+// ------------ END LOGIN -------------
