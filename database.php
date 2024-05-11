@@ -37,7 +37,8 @@ function get_room($room_id)
     return $result;
 }
 
-function Login($email,$pass){
+function Login($email, $pass)
+{
     $conn = init_conn();
     $sql = "SELECT * FROM guests WHERE email = '$email' AND password = '$pass'";
     $result = mysqli_query($conn, $sql);
@@ -48,14 +49,16 @@ function Login($email,$pass){
 
 
 // TODO: get_guest() and get_booking() @kandeel
-function get_guest($guest_id){
+function get_guest($guest_id)
+{
     $conn = init_conn();
     $sql = "SELECT * FROM guests WHERE guest_id = '$guest_id'";
     $result = mysqli_query($conn, $sql);
     mysqli_close($conn);
     return $result;
 }
-function get_guestByemail($email){
+function get_guestByemail($email)
+{
     $conn = init_conn();
     $sql = "SELECT * FROM guests WHERE email = '$email'";
     $result = mysqli_query($conn, $sql);
@@ -63,7 +66,8 @@ function get_guestByemail($email){
     return $result;
 }
 
-function get_booking($booking_id){
+function get_booking($booking_id)
+{
     $conn = init_conn();
     $sql = "SELECT * FROM bookings WHERE booking_id = '$booking_id'";
     $result = mysqli_query($conn, $sql);
@@ -114,5 +118,5 @@ function add_booking($conn, $email, $room_id, $check_in, $check_out)
     if (!user_exists($conn, $email) || !room_exists($conn, $room_id))
         return false;
     $price =
-    $sql = 'INSERT INTO bookings (user_id, room_id, check_in, check_out) VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO bookings (user_id, room_id, check_in, check_out) VALUES (?, ?, ?, ?)';
 }
