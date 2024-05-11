@@ -39,7 +39,7 @@ function get_room($room_id)
 
 function Login($email,$pass){
     $conn = init_conn();
-    $sql = "SELECT * FROM guests WHERE email = 'youssik000@gmailcom' AND password = 'kandeel'";
+    $sql = "SELECT * FROM guests WHERE email = '$email' AND password = '$pass'";
     $result = mysqli_query($conn, $sql);
     $numberOfRows = mysqli_num_rows($result);
     mysqli_close($conn);
