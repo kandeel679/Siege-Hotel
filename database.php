@@ -26,6 +26,14 @@ function get_rooms()
     mysqli_close($conn);
     return $result;
 }
+function get_random_rooms()
+{
+    $conn = init_conn();
+    $sql = "SELECT * FROM rooms ORDER BY RAND() LIMIT 3";
+    $result = mysqli_query($conn, $sql);
+    mysqli_close($conn);
+    return $result;
+}
 
 function get_room($room_id)
 {

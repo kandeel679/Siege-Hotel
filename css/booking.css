@@ -26,7 +26,8 @@
     right: 0;
     bottom: 0;
     top: 0;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.2 );
+    backdrop-filter: blur(9px);
 }
 
 .booking-cta {
@@ -75,6 +76,11 @@
     border-radius: 0px;
     -webkit-transition: 0.2s;
     transition: 0.2s;
+}
+.booking-form .label {
+
+    box-shadow: none;
+    border: none;
 }
 
 .booking-form .form-control::-webkit-input-placeholder {

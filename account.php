@@ -50,12 +50,10 @@ if (!isset($_SESSION['guest_email'])) {
                                     
                                 </div>
                                 <div class="form-btn mb-10">
-                                    <a href="#Booked_rooms"><button class="submit-btn" name="confirm_booking">Booked rooms</button></a>
+                                    <a href="index.php"><button class="submit-btn" name="confirm_booking">Back</button></a>
                                 </div>
-                           
                         </div>
                     </div>
-                
             </div>
         </div>
     </div> 

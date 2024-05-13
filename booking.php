@@ -37,7 +37,7 @@ if (isset($_POST['confirm_booking'])) {
         $room = get_room($_SESSION['room_id']);
         $user = get_guest($_SESSION['guest_email'])
     ?>
-    <div id="booking" class="section">
+    <div id="booking" class="section" style='background-image: url(<?= $room['imgurl']?>);' >
         <div class="section-center">
             <div class="container">
                 <div class="row">
@@ -56,13 +56,13 @@ if (isset($_POST['confirm_booking'])) {
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input readonly  class="form-control" type="text" value="<?= $user['name']?>">
+                                            <input readonly  class="form-control " type="text" value="<?= $user['name']?>">
                                             <span class="form-label">Name</span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <input readonly  class="form-control" type="text" value="<?= $user['email']?>">
+                                            <input readonly  class="form-control " type="text" value="<?= $user['email']?>">
                                             <span class="form-label">Email</span>
                                         </div>
                                     </div>
